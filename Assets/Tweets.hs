@@ -42,24 +42,37 @@ getTwInfo = do
     credential <- getCredential
     pure $ setCredential tokens credential def
 
-getTweets :: TWInfo -> Manager -> String -> Int -> IO [Status]
-getTweets twInfo mgr name = go Nothing
+getTweets :: TWInfo -> Manager -> [(String, Int)] -> IO [Status]
+getTweets twInfo mgr = go Nothing
   where
-    go _ 0 = pure []
-    go maxId n = do
+    go _ [] = pure []
+    go _ ((_, 0) : xs) = go Nothing xs
+    go maxId ((name, n) : xs) = do
         tweets <- call twInfo mgr
             $ userTimeline (ScreenNameParam name) & P.count ?~ 200 & P.maxId .~ maxId
         case tweets ^? _last . statusId of
             Nothing -> pure tweets
-            maxId' -> (tweets ++) <$> go maxId' (n - 1)
+            maxId' -> (tweets ++) <$> go maxId' ((name, n - 1) : xs)
+
+tweetFilter :: Status -> Bool
+tweetFilter tweet = not $ tweet ^. statusTruncated
+
+statusModifier :: String -> String
+statusModifier = rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
+
+parseArgs :: [String] -> [(String, Int)]
+parseArgs (name : n : xs) = (name, read n) : parseArgs xs
+parseArgs _ = []
 
 main :: IO ()
 main = do
     twInfo <- getTwInfo
     mgr <- newManager tlsManagerSettings
-    [name, nStr] <- getArgs
-    let n = read nStr
-    tweets <- getTweets twInfo mgr name n
-    let statuses = T.unpack . (^. statusText) <$> filter (not . (^. statusTruncated)) tweets
-    let statuses2 = rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http") <$> statuses
-    LB.putStrLn . encode $ (,) name <$> statuses2
+    args <- parseArgs <$> getArgs
+    tweets <- filter tweetFilter <$> getTweets twInfo mgr args
+    let results = (\t ->
+            ( t ^. statusUser . userScreenName
+            , t ^. statusId
+            , statusModifier . T.unpack $ t ^. statusText
+            )) <$> tweets
+    LB.putStrLn $ encode results
