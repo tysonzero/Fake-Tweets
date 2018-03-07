@@ -1,10 +1,11 @@
-{-# LANGUAGE LambdaCase, OverloadedStrings #-}
+{-# LANGUAGE LambdaCase, OverloadedStrings, TemplateHaskell #-}
 
 module Main (main) where
 
 import Control.Lens (_last, rewrite, (^.), (&), (?~), (^?), (.~))
 import Control.Monad (when)
-import Data.Aeson (encode)
+import Data.Aeson (ToJSON, defaultOptions, encode, fieldLabelModifier)
+import Data.Aeson.TH (deriveJSON)
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.Lazy.Char8 as LB
 import qualified Data.Conduit.List as CL
@@ -58,11 +59,19 @@ tweetFilter :: Status -> Bool
 tweetFilter tweet = not $ tweet ^. statusTruncated
 
 statusModifier :: String -> String
-statusModifier = rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
+statusModifier = reverse . dropWhile (== ' ') . reverse . dropWhile (== ' ')
+    . rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
 
 parseArgs :: [String] -> [(String, Int)]
 parseArgs (name : n : xs) = (name, read n) : parseArgs xs
 parseArgs _ = []
+
+data Tweet = Tweet
+    { _name :: String
+    , _id :: Integer
+    , _status :: String
+    }
+deriveJSON defaultOptions {fieldLabelModifier = drop 1} ''Tweet
 
 main :: IO ()
 main = do
@@ -70,9 +79,9 @@ main = do
     mgr <- newManager tlsManagerSettings
     args <- parseArgs <$> getArgs
     tweets <- filter tweetFilter <$> getTweets twInfo mgr args
-    let results = (\t ->
-            ( t ^. statusUser . userScreenName
-            , t ^. statusId
-            , statusModifier . T.unpack $ t ^. statusText
-            )) <$> tweets
+    let results = (\t -> Tweet
+            { _name = T.unpack $ t ^. statusUser . userScreenName
+            , _id = t ^. statusId
+            , _status = statusModifier . T.unpack $ t ^. statusText
+            }) <$> tweets
     LB.putStrLn $ encode results
