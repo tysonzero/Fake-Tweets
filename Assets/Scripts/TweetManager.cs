@@ -70,6 +70,7 @@ public class TweetManager : MonoBehaviour {
 
     void ColorTypedChar()
     {
+        // Moves typed char within color style tag
         char typedChar = tweetText.text[tagStringLength + charsTyped];
         tweetText.text = tweetText.text.Remove(tagStringLength + charsTyped, 1);
         tweetText.text = tweetText.text.Insert(firstTagEnds + charsTyped, typedChar.ToString());
