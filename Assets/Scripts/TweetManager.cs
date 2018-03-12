@@ -49,7 +49,7 @@ public class TweetManager : MonoBehaviour {
     // Call this on Start, whenever a new Tweet is loaded
     void UpdateTweetTextString()
     {
-		tweetText.text = tweet.status;
+		tweetText.text = "Me";
 		currentTweetText = tweetText.text;
         tweetTyped = false;
 		sent = false;
