@@ -15,6 +15,7 @@ public class TweetManager : MonoBehaviour {
 	public bool sent;
 	public int velocity;
 	public AudioClip tweetSound;
+	public AudioClip errorSound;
 
 	public Vector3 targetPosition;
 
@@ -83,6 +84,8 @@ public class TweetManager : MonoBehaviour {
 							//                        sendButton.interactable = true;
 							Debug.Log ("The Tweet has been typed out. Press submit.");
 						}
+					} else {
+//						GetComponent<AudioSource>().PlayOneShot(errorSound);
 					}
 				}
 			} 

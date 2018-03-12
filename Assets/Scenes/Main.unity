@@ -328,8 +328,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 83315652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: -1.19, z: 0}
-  m_LocalScale: {x: 0.7862566, y: 0.7862566, z: 0.7862566}
+  m_LocalPosition: {x: -0.08, y: -1.027, z: 0}
+  m_LocalScale: {x: 0.80799574, y: 0.80799574, z: 0.80799574}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -546,9 +546,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -312, y: 156.59}
+  m_AnchoredPosition: {x: -324.18863, y: 146.4}
   m_SizeDelta: {x: 221.1, y: 29.4}
-  m_Pivot: {x: 0.5551212, y: 0.5}
+  m_Pivot: {x: 0.49999997, y: 0.5}
 --- !u!114 &606575593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,7 +569,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 94f5c366ab841417b90e0e0dc2d5d2a3, type: 3}
     m_FontSize: 22
     m_FontStyle: 1
     m_BestFit: 0
@@ -693,8 +693,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.181179, y: -184.45}
-  m_SizeDelta: {x: 221.1, y: 26.1}
+  m_AnchoredPosition: {x: 0.0000028610202, y: -181.98814}
+  m_SizeDelta: {x: 221.1, y: 31.024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &703547113
 MonoBehaviour:
@@ -716,13 +716,13 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_Font: {fileID: 12800000, guid: 94b886c1939f345e391a25fba9e4775b, type: 3}
+    m_FontSize: 12
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 0
+    m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -1408,7 +1408,7 @@ Canvas:
   m_GameObject: {fileID: 1510765539}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 1576941970}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1427,8 +1427,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1510765539}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 0.035671767, y: 0.035671767, z: 0.035671767}
   m_Children:
   - {fileID: 703547112}
   - {fileID: 606575592}
@@ -1445,8 +1445,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_SizeDelta: {x: 927, y: 395}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1576941967
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,8 +1516,8 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &1576941971
-Transform:
+--- !u!224 &1576941971
+RectTransform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -1529,6 +1529,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1576941972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1540,7 +1545,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77312362cf0784b9baec2db0e8bc98e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tweet_prefab: {fileID: 1763606361593424, guid: b3bccf04f74164f29a3c2b7375122069,
+  tweet_prefab: {fileID: 1564623143041228, guid: b3bccf04f74164f29a3c2b7375122069,
     type: 2}
   realDonaldTrumpSprite: {fileID: 21300000, guid: 8e2c3d72735cb49108bc862de5e13380,
     type: 3}
