@@ -41,19 +41,33 @@ public class GameController : MonoBehaviour {
 	}
 
 	void Update () {
-		if (downloaded && GameState.newTweetNeeded) {
 
-			if (timeline_tweets.Count > 3) {
-				Destroy(timeline_tweets.Dequeue());
-			}
+		if (!downloaded) {
+			return;
+		}
 
-			if (current_tweet != null) {
-				timeline_tweets.Enqueue(current_tweet);
-			}
+			if (GameState.state == GameState.State.TweetSent) {
+				if (timeline_tweets.Count > 3) {
+					timeline_tweets.Dequeue ();
+				}
+
+
+
+				if (current_tweet != null) {
+					timeline_tweets.Enqueue (current_tweet);
+				}
 
 			current_tweet = (GameObject)Instantiate (tweet_prefab);
-			Debug.Log ("Create");
-			GameState.newTweetNeeded = false;
+			GameState.state = GameState.State.Neutral;
+		} else if (GameState.state == GameState.State.TweetSkipped) {
+			
+			TweetManager t = current_tweet.GetComponent<TweetManager>();
+			t.targetPosition = new Vector3 (10.568651f, -9.985462f, 0);
+			if (t.transform.position.y < -9.555759) {
+				Destroy (current_tweet);
+				GameState.state = GameState.State.Neutral;
+				current_tweet = (GameObject)Instantiate (tweet_prefab);
+			}
 
 		}
 
@@ -74,6 +88,7 @@ public class GameController : MonoBehaviour {
 		s.Add("HillaryClinton", HillaryClintonSprite);
 		return s;
 	}
+
 		
 
 }

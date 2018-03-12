@@ -4,7 +4,9 @@ using UnityEngine;
 
 public static class GameState{
 
-	public static bool newTweetNeeded = true;
+	public enum State {Neutral, TweetSent, TweetSkipped};  
+
+	public static State state = State.TweetSent;
 
 
 }

@@ -12,7 +12,7 @@ public class TweetManager : MonoBehaviour {
 	public CanvasRenderer backgroundCanvas;
     public string currentTweetText; // The untyped text of the tweet on screen
     public bool tweetTyped;
-	public bool sent;
+	public bool done;
 	public int velocity;
 	public AudioClip tweetSound;
 	public AudioClip errorSound;
@@ -53,42 +53,48 @@ public class TweetManager : MonoBehaviour {
 		tweetText.text = tweet.status;
 		currentTweetText = tweetText.text;
         tweetTyped = false;
-		sent = false;
+		done = false;
 //        sendButton.interactable = false;
         charsTyped = 0;
     }
 
     void Update()
     {
-		if (!sent) {
-			if (tweetTyped) {
-				
-				if (Input.GetKey ("return")) {
-					sent = true;
-					Debug.Log ("SUBMIT");
-					SendTweet ();
-				} 
+		if (!done) {
+			if (Input.GetKey ("tab")) {
+				done = true;
+				Debug.Log ("SKIP");
+				SkipTweet ();
 			} else {
-				if (Input.anyKeyDown) {
-					Debug.Log (currentTweetText);
-					if (Input.inputString == currentTweetText [0].ToString ()) {
-						Debug.Log ("Typed the correct character: " + Input.inputString);                   
-						currentTweetText = currentTweetText.Remove (0, 1);
-						Debug.Log ("Remaining text: " + currentTweetText);
+				if (tweetTyped) {
+					
+					if (Input.GetKey ("return")) {
+						done = true;
+						Debug.Log ("SUBMIT");
+						SendTweet ();
+					} 
+				} else {
+					if (Input.anyKeyDown) {
+						Debug.Log (currentTweetText);
+						if (Input.inputString == currentTweetText [0].ToString ()) {
+							Debug.Log ("Typed the correct character: " + Input.inputString);                   
+							currentTweetText = currentTweetText.Remove (0, 1);
+							Debug.Log ("Remaining text: " + currentTweetText);
 
-						ColorTypedChar ();
-						charsTyped += 1;
+							ColorTypedChar ();
+							charsTyped += 1;
 
-						if (currentTweetText.Length == 0) {
-							tweetTyped = true;
-							//                        sendButton.interactable = true;
-							Debug.Log ("The Tweet has been typed out. Press submit.");
+							if (currentTweetText.Length == 0) {
+								tweetTyped = true;
+								// sendButton.interactable = true;
+								Debug.Log ("The Tweet has been typed out. Press submit.");
+							}
+						} else {
+							//						GetComponent<AudioSource>().PlayOneShot(errorSound);
 						}
-					} else {
-//						GetComponent<AudioSource>().PlayOneShot(errorSound);
 					}
 				}
-			} 
+			}
 		}
 
 
@@ -108,7 +114,16 @@ public class TweetManager : MonoBehaviour {
     {
 		GetComponent<AudioSource>().PlayOneShot(tweetSound);
         Debug.Log("Your Tweet has been sent.");
-		GameState.newTweetNeeded = true;
+		GameState.state = GameState.State.TweetSent;
 
     }
+
+
+	public void SkipTweet()
+	{
+		
+		Debug.Log("Your Tweet has been skipped.");
+		GameState.state = GameState.State.TweetSkipped;
+
+	}
 }
