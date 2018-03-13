@@ -7,7 +7,8 @@ public class TweetManager : MonoBehaviour {
 
     public Text tweetText;
 	public Tweet tweet;
-//    public Button sendButton;
+    public ApprovalRatingBar approvalRatingBar;
+
 	public Text handle;
 	public CanvasRenderer backgroundCanvas;
     public string currentTweetText; // The untyped text of the tweet on screen
@@ -21,12 +22,16 @@ public class TweetManager : MonoBehaviour {
 
     public int charsTyped;
 
+    public float sendTweetCorrectApprovalBonus = 0.3f;
+    public float skipTweetApprovalPenalty = 0.1f;
+
     // These are needed for changing which letters are colored as they are typed
     private int tagStringLength; // The first real letter of the tweet exists at this index
     private int firstTagEnds; // Typed letters get moved here so they become colored
 
     void Start()
     {
+        approvalRatingBar = GameObject.Find("ApprovalRatingBar").GetComponent<ApprovalRatingBar>();
 
 		targetPosition = new Vector3(0.2056804f, -2.582315f, 0);
 		velocity = 80;
@@ -35,7 +40,6 @@ public class TweetManager : MonoBehaviour {
 
         UpdateTweetTextString();
         AddColorTagsToTweet();
-//        sendButton.interactable = false;
     }
 
     void AddColorTagsToTweet()
@@ -54,7 +58,6 @@ public class TweetManager : MonoBehaviour {
 		currentTweetText = tweetText.text;
         tweetTyped = false;
 		done = false;
-//        sendButton.interactable = false;
         charsTyped = 0;
     }
 
@@ -113,17 +116,16 @@ public class TweetManager : MonoBehaviour {
     public void SendTweet()
     {
 		GetComponent<AudioSource>().PlayOneShot(tweetSound);
+        approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
         Debug.Log("Your Tweet has been sent.");
-		GameState.state = GameState.State.TweetSent;
-
+		GameState.state = GameState.State.TweetSent;   
     }
 
 
 	public void SkipTweet()
 	{
-		
+        approvalRatingBar.approvalRating -= skipTweetApprovalPenalty;
 		Debug.Log("Your Tweet has been skipped.");
 		GameState.state = GameState.State.TweetSkipped;
-
 	}
 }
