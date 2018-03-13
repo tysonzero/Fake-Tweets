@@ -22,8 +22,11 @@ public class TweetManager : MonoBehaviour {
 
     public int charsTyped;
 
+    [Header("ApprovalBar Balance Knobs")]
     public float sendTweetCorrectApprovalBonus = 0.3f;
-    public float skipTweetApprovalPenalty = 0.1f;
+    public float sendTweetIncorrectApprovalPenalty = 0.1f;
+    public float skipTweetCorrectApprovalBonus = 0.05f;
+    public float skipTweetIncorrectApprovalPenalty = 0.15f;
 
     // These are needed for changing which letters are colored as they are typed
     private int tagStringLength; // The first real letter of the tweet exists at this index
@@ -47,7 +50,6 @@ public class TweetManager : MonoBehaviour {
         string colorTags = "<color=blue></color>";
         tagStringLength = colorTags.Length;
         firstTagEnds = 12; // Change this if you change colorTags - should be the index of the second "<"
-        Debug.Log(tagStringLength);
         tweetText.text = colorTags + tweetText.text;
     }
 
@@ -66,14 +68,12 @@ public class TweetManager : MonoBehaviour {
 		if (!done) {
 			if (Input.GetKeyDown("tab")) {
 				done = true;
-				Debug.Log ("SKIP");
 				SkipTweet ();
 			} else {
 				if (tweetTyped) {
 					
 					if (Input.GetKeyDown("return")) {
 						done = true;
-						Debug.Log ("SUBMIT");
 						SendTweet ();
 					} 
 				} else {
@@ -116,16 +116,33 @@ public class TweetManager : MonoBehaviour {
     public void SendTweet()
     {
 		GetComponent<AudioSource>().PlayOneShot(tweetSound);
-        approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
-        Debug.Log("Your Tweet has been sent.");
+        if(tweet.name == "realDonaldTrump")
+        {
+            approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
+            Debug.Log("Your Tweet has been sent. Correct!");
+        }
+        else
+        {
+            approvalRatingBar.approvalRating -= sendTweetIncorrectApprovalPenalty;
+            Debug.Log("Your Tweet has been sent. Incorrect!");
+        }
+          
 		GameState.state = GameState.State.TweetSent;   
     }
 
-
 	public void SkipTweet()
 	{
-        approvalRatingBar.approvalRating -= skipTweetApprovalPenalty;
-		Debug.Log("Your Tweet has been skipped.");
+        if(tweet.name == "realDonaldTrump")
+        {
+            approvalRatingBar.approvalRating -= skipTweetIncorrectApprovalPenalty;
+            Debug.Log("You skipped that Tweet. Incorrect!");
+        }
+        else
+        {
+            approvalRatingBar.approvalRating += skipTweetCorrectApprovalBonus;
+            Debug.Log("You skipped that Tweet. Correct!");
+        }
+		
 		GameState.state = GameState.State.TweetSkipped;
 	}
 }

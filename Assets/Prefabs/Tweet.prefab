@@ -310,16 +310,21 @@ MonoBehaviour:
     id: 0
     status: 
     name: 
+  approvalRatingBar: {fileID: 0}
   handle: {fileID: 114808517276496794}
   backgroundCanvas: {fileID: 222922290218259530}
   currentTweetText: 
   tweetTyped: 0
-  sent: 0
+  done: 0
   velocity: 0
   tweetSound: {fileID: 8300000, guid: 9ce4c68e6e744463ea137efa07b94f2c, type: 3}
   errorSound: {fileID: 8300000, guid: 358be065f0ae24597b0d867137fbe7e9, type: 3}
   targetPosition: {x: 0, y: 0, z: 0}
   charsTyped: 0
+  sendTweetCorrectApprovalBonus: 0.3
+  sendTweetIncorrectApprovalPenalty: 0.1
+  skipTweetCorrectApprovalBonus: 0.05
+  skipTweetIncorrectApprovalPenalty: 0.15
 --- !u!222 &222041246878672412
 CanvasRenderer:
   m_ObjectHideFlags: 1

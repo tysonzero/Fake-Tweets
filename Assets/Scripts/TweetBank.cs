@@ -10,7 +10,6 @@ public static class TweetBank {
 	public static Random r = new Random();
 
 	public static Tweet getRandomTweet() {
-		Debug.Log("Here");
 
 		return tweets.data [(int)(r.NextDouble () * (tweets.data.Count - 1))];
 	}
