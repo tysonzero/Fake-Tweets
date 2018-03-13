@@ -8,6 +8,7 @@ import Data.Aeson (ToJSON, defaultOptions, encode, fieldLabelModifier)
 import Data.Aeson.TH (deriveJSON)
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.Lazy.Char8 as LB
+import Data.Char (isAscii)
 import qualified Data.Conduit.List as CL
 import Data.Foldable (traverse_)
 import Data.List (stripPrefix)
@@ -59,8 +60,8 @@ tweetFilter :: Status -> Bool
 tweetFilter tweet = not $ tweet ^. statusTruncated
 
 statusModifier :: String -> String
-statusModifier = reverse . dropWhile (== ' ') . reverse . dropWhile (== ' ')
-    . rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
+statusModifier = filter isAscii . reverse . dropWhile (== ' ') . reverse
+    . dropWhile (== ' ') . rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
 
 parseArgs :: [String] -> [(String, Int)]
 parseArgs (name : n : xs) = (name, read n) : parseArgs xs
