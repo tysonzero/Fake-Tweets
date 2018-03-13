@@ -14,10 +14,12 @@ public class GameController : MonoBehaviour {
 
 	public GameObject current_tweet;
 	public Queue<GameObject> timeline_tweets;
+	public Queue<GameObject> skipped_tweets;
 	public bool downloaded;
 
 	void Start () {
 		timeline_tweets = new Queue<GameObject>();
+		skipped_tweets = new Queue<GameObject>();
 		downloaded = false;
 		spriteMap = GetSpriteMap ();
 		StartCoroutine(DownloadTweets());
@@ -45,10 +47,10 @@ public class GameController : MonoBehaviour {
 		if (!downloaded) {
 			return;
 		}
-
-			if (GameState.state == GameState.State.TweetSent) {
+		if (GameState.state == GameState.State.TweetSent) {
+				GameState.state = GameState.State.Neutral;
 				if (timeline_tweets.Count > 3) {
-					timeline_tweets.Dequeue ();
+					Destroy(timeline_tweets.Dequeue ());
 				}
 
 
@@ -58,16 +60,22 @@ public class GameController : MonoBehaviour {
 				}
 
 			current_tweet = (GameObject)Instantiate (tweet_prefab);
-			GameState.state = GameState.State.Neutral;
+
 		} else if (GameState.state == GameState.State.TweetSkipped) {
+			GameState.state = GameState.State.Neutral;
 			
-			TweetManager t = current_tweet.GetComponent<TweetManager>();
-			t.targetPosition = new Vector3 (10.568651f, -9.985462f, 0);
-			if (t.transform.position.y < -9.555759) {
-				Destroy (current_tweet);
-				GameState.state = GameState.State.Neutral;
-				current_tweet = (GameObject)Instantiate (tweet_prefab);
+			if (skipped_tweets.Count > 3) {
+				Destroy(skipped_tweets.Dequeue ());
 			}
+
+
+
+			if (current_tweet != null) {
+				skipped_tweets.Enqueue (current_tweet);
+			}
+
+			current_tweet = (GameObject)Instantiate (tweet_prefab);
+
 
 		}
 
@@ -78,6 +86,14 @@ public class GameController : MonoBehaviour {
 			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.tweet.name];
 			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
  		}
+
+		GameObject[] ss = skipped_tweets.ToArray ();
+		for (int i = 0; i < ss.Length; i++) {
+			TweetManager t = ss [i].GetComponent<TweetManager>();
+			t.targetPosition = new Vector3 (11.12909f, (float) (ss.Length - i - 1) * -4.612444f + 1.942444f, 0);
+			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.tweet.name];
+			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
+		}
 	}
 
 

@@ -29,7 +29,7 @@ public class TweetManager : MonoBehaviour {
     {
 
 		targetPosition = new Vector3(0.2056804f, -2.582315f, 0);
-		velocity = 100;
+		velocity = 80;
 
 		tweet = TweetBank.getRandomTweet ();
 
@@ -61,14 +61,14 @@ public class TweetManager : MonoBehaviour {
     void Update()
     {
 		if (!done) {
-			if (Input.GetKey ("tab")) {
+			if (Input.GetKeyDown("tab")) {
 				done = true;
 				Debug.Log ("SKIP");
 				SkipTweet ();
 			} else {
 				if (tweetTyped) {
 					
-					if (Input.GetKey ("return")) {
+					if (Input.GetKeyDown("return")) {
 						done = true;
 						Debug.Log ("SUBMIT");
 						SendTweet ();
