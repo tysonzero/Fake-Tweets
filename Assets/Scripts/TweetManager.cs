@@ -34,10 +34,9 @@ public class TweetManager : MonoBehaviour {
     private int tagStringLength; // The first real letter of the tweet exists at this index
     private int firstTagEnds; // Typed letters get moved here so they become colored
 
-	private static Dictionary<Decimal, int> correctTweets = new Dictionary<Decimal, int> ();
-	private static Dictionary<Decimal, int> incorrectTweets = new Dictionary<Decimal, int> ();
-	private static Dictionary<Decimal, double> timeOnTweets = new Dictionary<Decimal, double> ();
-	private static DateTime lastActionTime;
+	private static DateTime createTime;
+
+	private Action action;
 
     void Start()
     {
@@ -47,11 +46,14 @@ public class TweetManager : MonoBehaviour {
 		velocity = 80;
 
 		tweet = TweetBank.getRandomTweet ();
-
+		action = new Action(tweet);
+		AnalyticManager.addAction (action);
+		saveAnalytics ();
+			
         UpdateTweetTextString();
         AddColorTagsToTweet();
 
-		lastActionTime = DateTime.Now;
+		createTime = DateTime.Now;
     }
 
     void AddColorTagsToTweet()
@@ -98,9 +100,13 @@ public class TweetManager : MonoBehaviour {
 
 							if (currentTweetText.Length == 0) {
 								tweetTyped = true;
-								// sendButton.interactable = true;
+								AnalyticManager.incrementWordCount ();
 								Debug.Log ("The Tweet has been typed out. Press submit.");
+							} else if (Input.GetKeyDown("space")) {
+								AnalyticManager.incrementWordCount ();
 							}
+
+
 						} else {
 							//						GetComponent<AudioSource>().PlayOneShot(errorSound);
 						}
@@ -129,24 +135,16 @@ public class TweetManager : MonoBehaviour {
         {
             approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
             Debug.Log("Your Tweet has been sent. Correct!");
-			int count = 0;
-			correctTweets.TryGetValue (tweet.id, out count);
-			correctTweets [tweet.id] = count + 1;
         }
         else
         {
             approvalRatingBar.approvalRating -= sendTweetIncorrectApprovalPenalty;
-            Debug.Log("Your Tweet has been sent. Incorrect!");
-			int count = 0;
-			incorrectTweets.TryGetValue (tweet.id, out count);
-			incorrectTweets [tweet.id] = count + 1;
+			Debug.Log ("Your Tweet has been sent. Incorrect!");
         }
           
-		double time = 0;
-		timeOnTweets.TryGetValue(tweet.id, out time);
 		DateTime actionTime = DateTime.Now;
-		timeOnTweets [tweet.id] = time + (actionTime - lastActionTime).TotalSeconds;
-		lastActionTime = actionTime;
+		action.timeSpent = (float)(actionTime - createTime).TotalSeconds;
+		action.action = "Sent";
 
 		GameState.state = GameState.State.TweetSent;   
 
@@ -159,24 +157,16 @@ public class TweetManager : MonoBehaviour {
         {
             approvalRatingBar.approvalRating -= skipTweetIncorrectApprovalPenalty;
             Debug.Log("You skipped that Tweet. Incorrect!");
-			int count = 0;
-			incorrectTweets.TryGetValue (tweet.id, out count);
-			incorrectTweets [tweet.id] = count + 1;
         }
         else
         {
             approvalRatingBar.approvalRating += skipTweetCorrectApprovalBonus;
             Debug.Log("You skipped that Tweet. Correct!");
-			int count = 0;
-			correctTweets.TryGetValue (tweet.id, out count);
-			correctTweets [tweet.id] = count + 1;
         }
 
-		double time = 0;
-		timeOnTweets.TryGetValue(tweet.id, out time);
 		DateTime actionTime = DateTime.Now;
-		timeOnTweets [tweet.id] = time + (actionTime - lastActionTime).TotalSeconds;
-		lastActionTime = actionTime;
+		action.timeSpent = (float)(actionTime - createTime).TotalSeconds;
+		action.action = "Skipped";
 
 		GameState.state = GameState.State.TweetSkipped;
 
@@ -184,28 +174,6 @@ public class TweetManager : MonoBehaviour {
 	}
 
 	private void saveAnalytics() {
-		File.WriteAllText ("correctTweets.txt", "");
-		foreach (KeyValuePair<Decimal, int> pair in correctTweets) {
-			File.AppendAllText ("correctTweets.txt", pair.Key.ToString());
-			File.AppendAllText ("correctTweets.txt", ": ");
-			File.AppendAllText ("correctTweets.txt", pair.Value.ToString());
-			File.AppendAllText ("correctTweets.txt", "\n");
-		}
-
-		File.WriteAllText ("incorrectTweets.txt", "");
-		foreach (KeyValuePair<Decimal, int> pair in incorrectTweets) {
-			File.AppendAllText ("incorrectTweets.txt", pair.Key.ToString());
-			File.AppendAllText ("incorrectTweets.txt", ": ");
-			File.AppendAllText ("incorrectTweets.txt", pair.Value.ToString());
-			File.AppendAllText ("incorrectTweets.txt", "\n");
-		}
-
-		File.WriteAllText ("timeOnTweets.txt", "");
-		foreach (KeyValuePair<Decimal, double> pair in timeOnTweets) {
-			File.AppendAllText ("timeOnTweets.txt", pair.Key.ToString());
-			File.AppendAllText ("timeOnTweets.txt", ": ");
-			File.AppendAllText ("timeOnTweets.txt", pair.Value.ToString());
-			File.AppendAllText ("timeOnTweets.txt", "\n");
-		}
+		AnalyticManager.save ();
 	}
 }

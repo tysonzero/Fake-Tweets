@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,12 +19,16 @@ public class GameController : MonoBehaviour {
 	public Queue<GameObject> skipped_tweets;
 	public bool downloaded;
 
+	public DateTime startTime;
+
 	void Start () {
 		timeline_tweets = new Queue<GameObject>();
 		skipped_tweets = new Queue<GameObject>();
 		downloaded = false;
+		startTime = DateTime.Now;
 		spriteMap = GetSpriteMap ();
 		StartCoroutine(DownloadTweets());
+
 	}
 
 	IEnumerator DownloadTweets()
@@ -100,6 +105,9 @@ public class GameController : MonoBehaviour {
 			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.tweet.name];
 			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
 		}
+
+		DateTime now = DateTime.Now;
+		AnalyticManager.setTimeSpent((float)(now - startTime).TotalSeconds);
 	}
 
 
