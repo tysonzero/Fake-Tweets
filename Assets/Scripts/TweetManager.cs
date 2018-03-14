@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.IO;
 
 public class TweetManager : MonoBehaviour {
 
@@ -32,6 +34,11 @@ public class TweetManager : MonoBehaviour {
     private int tagStringLength; // The first real letter of the tweet exists at this index
     private int firstTagEnds; // Typed letters get moved here so they become colored
 
+	private Dictionary<int, int> correctTweets;
+	private Dictionary<int, int> incorrectTweets;
+	private Dictionary<int, double> timeOnTweets;
+	private DateTime lastActionTime;
+
     void Start()
     {
         approvalRatingBar = GameObject.Find("ApprovalRatingBar").GetComponent<ApprovalRatingBar>();
@@ -43,6 +50,11 @@ public class TweetManager : MonoBehaviour {
 
         UpdateTweetTextString();
         AddColorTagsToTweet();
+
+		correctTweets = new Dictionary<int, int> ();
+		incorrectTweets = new Dictionary<int, int> ();
+		timeOnTweets = new Dictionary<int, double> ();
+		lastActionTime = DateTime.Now;
     }
 
     void AddColorTagsToTweet()
@@ -120,14 +132,28 @@ public class TweetManager : MonoBehaviour {
         {
             approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
             Debug.Log("Your Tweet has been sent. Correct!");
+			int count = 0;
+			correctTweets.TryGetValue (tweet.id, out count);
+			correctTweets [tweet.id] = count + 1;
         }
         else
         {
             approvalRatingBar.approvalRating -= sendTweetIncorrectApprovalPenalty;
             Debug.Log("Your Tweet has been sent. Incorrect!");
+			int count = 0;
+			incorrectTweets.TryGetValue (tweet.id, out count);
+			incorrectTweets [tweet.id] = count + 1;
         }
           
+		double time = 0;
+		timeOnTweets.TryGetValue(tweet.id, out time);
+		DateTime actionTime = DateTime.Now;
+		timeOnTweets [tweet.id] = time + (actionTime - lastActionTime).TotalSeconds;
+		lastActionTime = actionTime;
+
 		GameState.state = GameState.State.TweetSent;   
+
+		saveAnalytics ();
     }
 
 	public void SkipTweet()
@@ -136,13 +162,53 @@ public class TweetManager : MonoBehaviour {
         {
             approvalRatingBar.approvalRating -= skipTweetIncorrectApprovalPenalty;
             Debug.Log("You skipped that Tweet. Incorrect!");
+			int count = 0;
+			incorrectTweets.TryGetValue (tweet.id, out count);
+			incorrectTweets [tweet.id] = count + 1;
         }
         else
         {
             approvalRatingBar.approvalRating += skipTweetCorrectApprovalBonus;
             Debug.Log("You skipped that Tweet. Correct!");
+			int count = 0;
+			correctTweets.TryGetValue (tweet.id, out count);
+			correctTweets [tweet.id] = count + 1;
         }
-		
+
+		double time = 0;
+		timeOnTweets.TryGetValue(tweet.id, out time);
+		DateTime actionTime = DateTime.Now;
+		timeOnTweets [tweet.id] = time + (actionTime - lastActionTime).TotalSeconds;
+		lastActionTime = actionTime;
+
 		GameState.state = GameState.State.TweetSkipped;
+
+		saveAnalytics ();
+	}
+
+	private void saveAnalytics() {
+		File.WriteAllText ("correctTweets.txt", "");
+		foreach (KeyValuePair<int, int> pair in correctTweets) {
+			File.AppendAllText ("correctTweets.txt", pair.Key.ToString());
+			File.AppendAllText ("correctTweets.txt", ": ");
+			File.AppendAllText ("correctTweets.txt", pair.Value.ToString());
+			File.AppendAllText ("correctTweets.txt", "\n");
+		}
+
+		File.WriteAllText ("incorrectTweets.txt", "");
+		foreach (KeyValuePair<int, int> pair in incorrectTweets) {
+			File.AppendAllText ("incorrectTweets.txt", pair.Key.ToString());
+			File.AppendAllText ("incorrectTweets.txt", ": ");
+			File.AppendAllText ("incorrectTweets.txt", pair.Value.ToString());
+			File.AppendAllText ("incorrectTweets.txt", "\n");
+		}
+
+		File.WriteAllText ("timeOnTweets.txt", "");
+		foreach (KeyValuePair<int, double> pair in timeOnTweets) {
+			File.AppendAllText ("timeOnTweets.txt", pair.Key.ToString());
+			File.AppendAllText ("timeOnTweets.txt", ": ");
+			File.AppendAllText ("timeOnTweets.txt", pair.Value.ToString());
+			File.AppendAllText ("timeOnTweets.txt", "\n");
+		}
 	}
 }
