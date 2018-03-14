@@ -34,10 +34,10 @@ public class TweetManager : MonoBehaviour {
     private int tagStringLength; // The first real letter of the tweet exists at this index
     private int firstTagEnds; // Typed letters get moved here so they become colored
 
-	private Dictionary<int, int> correctTweets;
-	private Dictionary<int, int> incorrectTweets;
-	private Dictionary<int, double> timeOnTweets;
-	private DateTime lastActionTime;
+	private static Dictionary<Decimal, int> correctTweets = new Dictionary<Decimal, int> ();
+	private static Dictionary<Decimal, int> incorrectTweets = new Dictionary<Decimal, int> ();
+	private static Dictionary<Decimal, double> timeOnTweets = new Dictionary<Decimal, double> ();
+	private static DateTime lastActionTime;
 
     void Start()
     {
@@ -51,9 +51,6 @@ public class TweetManager : MonoBehaviour {
         UpdateTweetTextString();
         AddColorTagsToTweet();
 
-		correctTweets = new Dictionary<int, int> ();
-		incorrectTweets = new Dictionary<int, int> ();
-		timeOnTweets = new Dictionary<int, double> ();
 		lastActionTime = DateTime.Now;
     }
 
@@ -188,7 +185,7 @@ public class TweetManager : MonoBehaviour {
 
 	private void saveAnalytics() {
 		File.WriteAllText ("correctTweets.txt", "");
-		foreach (KeyValuePair<int, int> pair in correctTweets) {
+		foreach (KeyValuePair<Decimal, int> pair in correctTweets) {
 			File.AppendAllText ("correctTweets.txt", pair.Key.ToString());
 			File.AppendAllText ("correctTweets.txt", ": ");
 			File.AppendAllText ("correctTweets.txt", pair.Value.ToString());
@@ -196,7 +193,7 @@ public class TweetManager : MonoBehaviour {
 		}
 
 		File.WriteAllText ("incorrectTweets.txt", "");
-		foreach (KeyValuePair<int, int> pair in incorrectTweets) {
+		foreach (KeyValuePair<Decimal, int> pair in incorrectTweets) {
 			File.AppendAllText ("incorrectTweets.txt", pair.Key.ToString());
 			File.AppendAllText ("incorrectTweets.txt", ": ");
 			File.AppendAllText ("incorrectTweets.txt", pair.Value.ToString());
@@ -204,7 +201,7 @@ public class TweetManager : MonoBehaviour {
 		}
 
 		File.WriteAllText ("timeOnTweets.txt", "");
-		foreach (KeyValuePair<int, double> pair in timeOnTweets) {
+		foreach (KeyValuePair<Decimal, double> pair in timeOnTweets) {
 			File.AppendAllText ("timeOnTweets.txt", pair.Key.ToString());
 			File.AppendAllText ("timeOnTweets.txt", ": ");
 			File.AppendAllText ("timeOnTweets.txt", pair.Value.ToString());
