@@ -18,6 +18,8 @@ public class GameController : MonoBehaviour {
 	public Queue<GameObject> timeline_tweets;
 	public Queue<GameObject> skipped_tweets;
 	public bool downloaded;
+    public bool tweetReadyToMove;
+    public float tweetMovementDelay = 0.5f;
 
 	public DateTime startTime;
 
@@ -58,53 +60,58 @@ public class GameController : MonoBehaviour {
 		if (!downloaded) {
 			return;
 		}
-		if (GameState.state == GameState.State.TweetSent) {
-				GameState.state = GameState.State.Neutral;
-				if (timeline_tweets.Count > 3) {
-					Destroy(timeline_tweets.Dequeue ());
-				}
+		if (GameState.state == GameState.State.TweetSent)
+        {
+            tweetMovementDelay = 0.5f;
+			GameState.state = GameState.State.Neutral;
 
-
-
-				if (current_tweet != null) {
-					timeline_tweets.Enqueue (current_tweet);
-				}
+			if (timeline_tweets.Count > 3)
+            {
+				Destroy(timeline_tweets.Dequeue ());
+			}
+			if (current_tweet != null)
+            {
+				timeline_tweets.Enqueue (current_tweet);
+			}
 
 			current_tweet = (GameObject)Instantiate (tweet_prefab);
 
 		} else if (GameState.state == GameState.State.TweetSkipped) {
-			GameState.state = GameState.State.Neutral;
-			
-			if (skipped_tweets.Count > 3) {
+            tweetMovementDelay = 0.5f;
+            GameState.state = GameState.State.Neutral;
+            if (skipped_tweets.Count > 3) {
 				Destroy(skipped_tweets.Dequeue ());
 			}
-
-
 
 			if (current_tweet != null) {
 				skipped_tweets.Enqueue (current_tweet);
 			}
 
 			current_tweet = (GameObject)Instantiate (tweet_prefab);
-
-
 		}
 
-		GameObject[] ts = timeline_tweets.ToArray ();
+        tweetMovementDelay -= Time.deltaTime;
+        GameObject[] ts = timeline_tweets.ToArray ();
 		for (int i = 0; i < ts.Length; i++) {
-			TweetManager t = ts [i].GetComponent<TweetManager>();
-			t.targetPosition = new Vector3 (-11.12909f, (float) (ts.Length - i - 1) * -4.612444f + 1.942444f, 0);
-			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.tweet.name];
-			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
+            TweetManager t = ts[i].GetComponent<TweetManager>();
+            t.backgroundCanvas.GetComponent<Image>().sprite = spriteMap[t.tweet.name];
+            t.handle.text = t.tweet.name + "\n@" + t.tweet.name;         
+            if (tweetMovementDelay <= 0.0f)
+            {
+                t.targetPosition = new Vector3(-11.12909f, (float)(ts.Length - i - 1) * -4.612444f + 1.942444f, 0);
+            }	
  		}
 
 		GameObject[] ss = skipped_tweets.ToArray ();
 		for (int i = 0; i < ss.Length; i++) {
-			TweetManager t = ss [i].GetComponent<TweetManager>();
-			t.targetPosition = new Vector3 (11.12909f, (float) (ss.Length - i - 1) * -4.612444f + 1.942444f, 0);
+			TweetManager t = ss [i].GetComponent<TweetManager>();		
 			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.tweet.name];
 			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
-		}
+            if(tweetMovementDelay <= 0.0f)
+            {
+                t.targetPosition = new Vector3(11.12909f, (float)(ss.Length - i - 1) * -4.612444f + 1.942444f, 0);
+            }            
+        }
 
 		DateTime now = DateTime.Now;
 		AnalyticManager.setTimeSpent((float)(now - startTime).TotalSeconds);

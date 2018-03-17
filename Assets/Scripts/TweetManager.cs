@@ -37,13 +37,14 @@ public class TweetManager : MonoBehaviour {
 	private static DateTime createTime;
 
 	private Action action;
+    Dictionary<string, Sprite> spriteMap;
 
     void Start()
     {
         approvalRatingBar = GameObject.Find("ApprovalRatingBar").GetComponent<ApprovalRatingBar>();
 
 		targetPosition = new Vector3(0.2056804f, -2.582315f, 0);
-		velocity = 80;
+		velocity = 50;
 
 		tweet = TweetBank.getRandomTweet ();
 		action = new Action(tweet);
@@ -54,11 +55,13 @@ public class TweetManager : MonoBehaviour {
         AddColorTagsToTweet();
 
 		createTime = DateTime.Now;
+
+        spriteMap = GameObject.Find("Main Camera").GetComponent<GameController>().spriteMap;
     }
 
     void AddColorTagsToTweet()
     {
-        string colorTags = "<color=blue></color>";
+        string colorTags = "<color=blue></color>"; // if you change this change firstTagEnds below
         tagStringLength = colorTags.Length;
         firstTagEnds = 12; // Change this if you change colorTags - should be the index of the second "<"
         tweetText.text = colorTags + tweetText.text;
@@ -76,21 +79,30 @@ public class TweetManager : MonoBehaviour {
 
     void Update()
     {
-		if (!done) {
-			if (Input.GetKeyDown("tab")) {
+		if (!done)
+        {
+			if (Input.GetKeyDown("tab"))
+            {
 				done = true;
 				SkipTweet ();
-			} else {
-				if (tweetTyped) {
-					
-					if (Input.GetKeyDown("return")) {
+			}
+            else
+            {
+				if (tweetTyped)
+                {				
+					if (Input.GetKeyDown("return"))
+                    {
 						done = true;
 						SendTweet ();
 					} 
-				} else {
-					if (Input.anyKeyDown) {
+				}
+                else
+                {
+					if (Input.anyKeyDown)
+                    {
 						Debug.Log (currentTweetText);
-						if (Input.inputString == currentTweetText [0].ToString ()) {
+						if (Input.inputString == currentTweetText [0].ToString ())
+                        {
 							Debug.Log ("Typed the correct character: " + Input.inputString);                   
 							currentTweetText = currentTweetText.Remove (0, 1);
 							Debug.Log ("Remaining text: " + currentTweetText);
@@ -98,25 +110,34 @@ public class TweetManager : MonoBehaviour {
 							ColorTypedChar ();
 							charsTyped += 1;
 
-							if (currentTweetText.Length == 0) {
+							if (currentTweetText.Length == 0)
+                            {
 								tweetTyped = true;
 								AnalyticManager.incrementWordCount ();
 								Debug.Log ("The Tweet has been typed out. Press submit.");
-							} else if (Input.GetKeyDown("space")) {
+							}
+                            else if (Input.GetKeyDown("space"))
+                            {
 								AnalyticManager.incrementWordCount ();
 							}
-
-
-						} else {
-							//						GetComponent<AudioSource>().PlayOneShot(errorSound);
+						}
+                        else
+                        {
+							// GetComponent<AudioSource>().PlayOneShot(errorSound);
 						}
 					}
 				}
 			}
 		}
+        else
+        {
+            // Reveal tweet pic and name
+            this.handle.text = this.tweet.name + "\n@" + this.tweet.name;
+            this.backgroundCanvas.GetComponent<Image>().sprite = spriteMap[this.tweet.name];
+            // Wait
+        }
 
-
-		transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
     }
 
     void ColorTypedChar()
