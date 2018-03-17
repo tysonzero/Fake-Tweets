@@ -291,7 +291,7 @@ RectTransform:
   m_Children:
   - {fileID: 1552625381}
   m_Father: {fileID: 1510765543}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1249,7 +1249,7 @@ RectTransform:
   - {fileID: 725611279}
   - {fileID: 2095156699}
   m_Father: {fileID: 1510765543}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1907,6 +1907,7 @@ GameObject:
   - component: {fileID: 1576941969}
   - component: {fileID: 1576941968}
   - component: {fileID: 1576941972}
+  - component: {fileID: 1576941973}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1995,14 +1996,95 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tweet_prefab: {fileID: 1564623143041228, guid: b3bccf04f74164f29a3c2b7375122069,
     type: 2}
-  realDonaldTrumpSprite: {fileID: 21300000, guid: 8e2c3d72735cb49108bc862de5e13380,
+  donald_correct: {fileID: 21300000, guid: 4ebe6287422b549758ee74990d56c8db, type: 3}
+  donald_wrong: {fileID: 21300000, guid: 9da99560b31184232b9ed9782725f48d, type: 3}
+  fake_donald_correct: {fileID: 21300000, guid: 62e6fa06de6a9492b9549488fba64d0c,
     type: 3}
-  RealDonalDrumpfSprite: {fileID: 21300000, guid: f209bc370575a4634b1cb48ccedfb55c,
-    type: 3}
-  HillaryClintonSprite: {fileID: 21300000, guid: a6b53c4d635ad4ab6b46173abe0a8959,
-    type: 3}
+  fake_donald_wrong: {fileID: 21300000, guid: 19c895afad44c4ecea0a3f4bda8e46ea, type: 3}
+  hillary_correct: {fileID: 21300000, guid: bb68cbe278e9740d7ab0cb8fe77f64be, type: 3}
+  hillary_wrong: {fileID: 21300000, guid: 7c81f7c3d2caa49bcaa09b3c6085c4ff, type: 3}
   current_tweet: {fileID: 0}
   downloaded: 0
+--- !u!82 &1576941973
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1576941967}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 24392ebdfb7d1447080bc52657187a76, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.3
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 209
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!1 &1609943569
 GameObject:
   m_ObjectHideFlags: 0

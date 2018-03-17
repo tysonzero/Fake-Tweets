@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿	using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,8 +17,8 @@ public class TweetManager : MonoBehaviour {
     public bool tweetTyped;
 	public bool done;
 	public int velocity;
-	public AudioClip tweetSound;
-	public AudioClip errorSound;
+	public AudioClip correctSound;
+	public AudioClip wrongSound;
 
 	public Vector3 targetPosition;
 
@@ -37,6 +37,8 @@ public class TweetManager : MonoBehaviour {
 	private static DateTime createTime;
 
 	private Action action;
+
+	public string background_name;
 
     void Start()
     {
@@ -130,16 +132,25 @@ public class TweetManager : MonoBehaviour {
     // Called when Enter Key is pressed
     public void SendTweet()
     {
-		GetComponent<AudioSource>().PlayOneShot(tweetSound);
-        if(tweet.name == "realDonaldTrump")
+		
+		if(tweet.name.Equals("realDonaldTrump"))
         {
             approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
+			GetComponent<AudioSource>().PlayOneShot(correctSound);
             Debug.Log("Your Tweet has been sent. Correct!");
+			background_name = "donald_correct";
         }
         else
         {
             approvalRatingBar.approvalRating -= sendTweetIncorrectApprovalPenalty;
+			GetComponent<AudioSource>().PlayOneShot(wrongSound);
 			Debug.Log ("Your Tweet has been sent. Incorrect!");
+			if (tweet.name.Equals("HillaryClinton")) {
+				background_name = "hillary_wrong";
+			} else {
+				Debug.Log ("XXX");
+				background_name = "fake_donald_wrong";
+			}
         }
           
 		DateTime actionTime = DateTime.Now;
@@ -153,15 +164,25 @@ public class TweetManager : MonoBehaviour {
 
 	public void SkipTweet()
 	{
-        if(tweet.name == "realDonaldTrump")
+		if(tweet.name.Equals("realDonaldTrump"))
         {
             approvalRatingBar.approvalRating -= skipTweetIncorrectApprovalPenalty;
             Debug.Log("You skipped that Tweet. Incorrect!");
+			background_name = "donald_wrong";
+			GetComponent<AudioSource>().PlayOneShot(wrongSound);
         }
         else
         {
+			GetComponent<AudioSource>().PlayOneShot(correctSound);
             approvalRatingBar.approvalRating += skipTweetCorrectApprovalBonus;
             Debug.Log("You skipped that Tweet. Correct!");
+
+			if (tweet.name.Equals("HillaryClinton")) {
+				background_name = "hillary_correct";
+			} else {
+				Debug.Log ("XXX");
+				background_name = "fake_donald_correct";
+			}
         }
 
 		DateTime actionTime = DateTime.Now;

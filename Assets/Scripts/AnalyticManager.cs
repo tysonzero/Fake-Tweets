@@ -7,6 +7,7 @@ using System.IO;
 public static class AnalyticManager {
 
 	public static Analytics an = new Analytics();
+	public static string creationTime = DateTime.Now.ToString().Replace(":", "_").Replace("/", "_");
 
 	public static void addAction(Action a) {
 		an.actions.Add (a);
@@ -21,8 +22,17 @@ public static class AnalyticManager {
 	}
 
 	public static void save() {
+
+		if (!Directory.Exists(Application.dataPath + "/Analytics")) {
+			Directory.CreateDirectory(Application.dataPath + "/Analytics");
+		}
+				
+
 		string json = JsonUtility.ToJson(an);
-		File.WriteAllText ("data_saved.json", json);
+		Debug.Log (Application.dataPath);
+		var file = File.CreateText (Application.dataPath + "/Analytics/data_saved " + creationTime + ".json");
+		file.WriteLine(json);
+		file.Close();
 	}
 }
 

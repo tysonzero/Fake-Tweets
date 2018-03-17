@@ -8,9 +8,12 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 	public GameObject tweet_prefab;
 
-	public Sprite realDonaldTrumpSprite;
-	public Sprite RealDonalDrumpfSprite;
-	public Sprite HillaryClintonSprite;
+	public Sprite donald_correct;
+	public Sprite donald_wrong;
+	public Sprite fake_donald_correct;
+	public Sprite fake_donald_wrong;
+	public Sprite hillary_correct;
+	public Sprite hillary_wrong;
 
 	public Dictionary<string, Sprite> spriteMap;
 
@@ -94,7 +97,7 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < ts.Length; i++) {
 			TweetManager t = ts [i].GetComponent<TweetManager>();
 			t.targetPosition = new Vector3 (-11.12909f, (float) (ts.Length - i - 1) * -4.612444f + 1.942444f, 0);
-			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.tweet.name];
+			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.background_name];
 			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
  		}
 
@@ -102,7 +105,8 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < ss.Length; i++) {
 			TweetManager t = ss [i].GetComponent<TweetManager>();
 			t.targetPosition = new Vector3 (11.12909f, (float) (ss.Length - i - 1) * -4.612444f + 1.942444f, 0);
-			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.tweet.name];
+			Debug.Log (t.background_name);
+			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.background_name];
 			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
 		}
 
@@ -113,9 +117,12 @@ public class GameController : MonoBehaviour {
 
 	Dictionary<string, Sprite> GetSpriteMap() {
 		Dictionary<string, Sprite> s = new Dictionary<string, Sprite>();
-		s.Add("realDonaldTrump", realDonaldTrumpSprite);
-		s.Add("RealDonalDrumpf", RealDonalDrumpfSprite);
-		s.Add("HillaryClinton", HillaryClintonSprite);
+		s.Add("donald_correct", donald_correct);
+		s.Add("donald_wrong", donald_wrong);
+		s.Add("fake_donald_correct", fake_donald_correct);
+		s.Add("fake_donald_wrong", fake_donald_wrong);
+		s.Add("hillary_correct", hillary_correct);
+		s.Add("hillary_wrong", hillary_wrong);
 		return s;
 	}
 

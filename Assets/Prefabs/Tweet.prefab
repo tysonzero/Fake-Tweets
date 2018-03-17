@@ -317,8 +317,8 @@ MonoBehaviour:
   tweetTyped: 0
   done: 0
   velocity: 0
-  tweetSound: {fileID: 8300000, guid: 9ce4c68e6e744463ea137efa07b94f2c, type: 3}
-  errorSound: {fileID: 8300000, guid: 358be065f0ae24597b0d867137fbe7e9, type: 3}
+  correctSound: {fileID: 8300000, guid: 63151bc30b9414d6aabaa59d26d1fb8a, type: 3}
+  wrongSound: {fileID: 8300000, guid: 764729413b9f841928dc3a7de9661aad, type: 3}
   targetPosition: {x: 0, y: 0, z: 0}
   charsTyped: 0
   sendTweetCorrectApprovalBonus: 0.3
