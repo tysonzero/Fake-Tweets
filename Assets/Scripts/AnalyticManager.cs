@@ -7,7 +7,7 @@ using System.IO;
 public static class AnalyticManager {
 
 	public static Analytics an = new Analytics();
-	public static string creationTime = DateTime.Now.ToString().Replace(":", "_").Replace("/", "_");
+	public static string creationTime;
 
 	public static void addAction(Action a) {
 		an.actions.Add (a);
