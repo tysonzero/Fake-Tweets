@@ -25,10 +25,10 @@ public class GameController : MonoBehaviour {
 		timeline_tweets = new Queue<GameObject>();
 		skipped_tweets = new Queue<GameObject>();
 		downloaded = false;
+        GameState.state = GameState.State.TweetSent;
 		startTime = DateTime.Now;
 		spriteMap = GetSpriteMap ();
 		StartCoroutine(DownloadTweets());
-
 	}
 
 	IEnumerator DownloadTweets()
