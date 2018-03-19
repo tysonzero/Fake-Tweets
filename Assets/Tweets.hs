@@ -57,7 +57,7 @@ getTweets twInfo mgr = go Nothing
             maxId' -> (tweets ++) <$> go maxId' ((name, n - 1) : xs)
 
 tweetFilter :: Status -> Bool
-tweetFilter tweet = not $ tweet ^. statusTruncated
+tweetFilter tweet = not (tweet ^. statusTruncated) && T.length (tweet ^. statusText) < 120
 
 statusModifier :: String -> String
 statusModifier = filter isAscii
