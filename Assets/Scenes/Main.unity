@@ -1908,6 +1908,7 @@ GameObject:
   - component: {fileID: 1576941968}
   - component: {fileID: 1576941972}
   - component: {fileID: 1576941973}
+  - component: {fileID: 1576941974}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2003,8 +2004,12 @@ MonoBehaviour:
   fake_donald_wrong: {fileID: 21300000, guid: 19c895afad44c4ecea0a3f4bda8e46ea, type: 3}
   hillary_correct: {fileID: 21300000, guid: bb68cbe278e9740d7ab0cb8fe77f64be, type: 3}
   hillary_wrong: {fileID: 21300000, guid: 7c81f7c3d2caa49bcaa09b3c6085c4ff, type: 3}
+  approvalRatingBar: {fileID: 64580218}
   current_tweet: {fileID: 0}
   downloaded: 0
+  tweetMovementDelay: 0.5
+  alarmSound: {fileID: 8300000, guid: a89162be20a7b45fe95ac360ec75e73b, type: 3}
+  alarmThreshold: 0
 --- !u!82 &1576941973
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2085,6 +2090,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &1576941974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1576941967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 207469858, guid: 220224b43fc464c28bc0e8de8f54a432, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventName: 
+  m_TrackableProperty:
+    m_Fields: []
+  m_Trigger: 0
 --- !u!1 &1609943569
 GameObject:
   m_ObjectHideFlags: 0
