@@ -14,17 +14,23 @@ public class ApprovalRatingBar : MonoBehaviour {
 
     public bool isFired;
 
+	public int score;
+
+	public bool hasWon;
+
 	// Use this for initialization
 	void Start ()
     {
         approvalRating = 1.0f;
         isFired = false;
+		hasWon = false;
+		score = 0;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
-        if(!isFired)
+        if(!isFired && !hasWon)
         {
             approvalRating -= approvalDecrementScalar * Time.deltaTime;
             BoundApprovalRating();
@@ -33,6 +39,12 @@ public class ApprovalRatingBar : MonoBehaviour {
             {
                 TriggerGameEndState();
             }
+			if (score > 100)
+			{
+				hasWon = true;
+				endGamePanel.SetActive (true);
+				Debug.Log("YOU WIN");
+			}
         }      
     }
 
