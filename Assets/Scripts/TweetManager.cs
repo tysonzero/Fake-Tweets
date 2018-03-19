@@ -17,8 +17,10 @@ public class TweetManager : MonoBehaviour {
     public bool tweetTyped;
 	public bool done;
 	public int velocity;
-	public AudioClip correctSound;
-	public AudioClip wrongSound;
+	public AudioClip correctSubmitSound;
+	public AudioClip wrongSubmitSound;
+	public AudioClip correctSkipSound;
+	public AudioClip wrongSkipSound;
 
 	public Vector3 targetPosition;
 
@@ -152,14 +154,14 @@ public class TweetManager : MonoBehaviour {
         {
             approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
 			approvalRatingBar.score += 5;
-			GetComponent<AudioSource>().PlayOneShot(correctSound);
+			GetComponent<AudioSource>().PlayOneShot(correctSubmitSound);
             Debug.Log("Your Tweet has been sent. Correct!");
 			background_name = "donald_correct";
         }
         else
         {
             approvalRatingBar.approvalRating -= sendTweetIncorrectApprovalPenalty;
-			GetComponent<AudioSource>().PlayOneShot(wrongSound);
+			GetComponent<AudioSource>().PlayOneShot(wrongSubmitSound);
 			Debug.Log ("Your Tweet has been sent. Incorrect!");
 			if (tweet.name.Equals("HillaryClinton")) {
 				background_name = "hillary_wrong";
@@ -185,11 +187,11 @@ public class TweetManager : MonoBehaviour {
             approvalRatingBar.approvalRating -= skipTweetIncorrectApprovalPenalty;
             Debug.Log("You skipped that Tweet. Incorrect!");
 			background_name = "donald_wrong";
-			GetComponent<AudioSource>().PlayOneShot(wrongSound);
+			GetComponent<AudioSource>().PlayOneShot(wrongSkipSound);
         }
         else
         {
-			GetComponent<AudioSource>().PlayOneShot(correctSound);
+			GetComponent<AudioSource>().PlayOneShot(correctSkipSound);
             approvalRatingBar.approvalRating += skipTweetCorrectApprovalBonus;
 			approvalRatingBar.score += 1;
             Debug.Log("You skipped that Tweet. Correct!");

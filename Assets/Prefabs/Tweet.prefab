@@ -317,8 +317,10 @@ MonoBehaviour:
   tweetTyped: 0
   done: 0
   velocity: 0
-  correctSound: {fileID: 8300000, guid: 63151bc30b9414d6aabaa59d26d1fb8a, type: 3}
-  wrongSound: {fileID: 8300000, guid: 764729413b9f841928dc3a7de9661aad, type: 3}
+  correctSubmitSound: {fileID: 8300000, guid: a5e855e522e394966bfea89f175524aa, type: 3}
+  wrongSubmitSound: {fileID: 8300000, guid: 21583cf644fb940e49dda0f16480cdb8, type: 3}
+  correctSkipSound: {fileID: 8300000, guid: d237cfe1d58ce495396cf692b241fbe2, type: 3}
+  wrongSkipSound: {fileID: 8300000, guid: 764729413b9f841928dc3a7de9661aad, type: 3}
   targetPosition: {x: 0, y: 0, z: 0}
   charsTyped: 0
   sendTweetCorrectApprovalBonus: 0.3
