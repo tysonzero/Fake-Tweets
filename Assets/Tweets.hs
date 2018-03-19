@@ -57,11 +57,13 @@ getTweets twInfo mgr = go Nothing
             maxId' -> (tweets ++) <$> go maxId' ((name, n - 1) : xs)
 
 tweetFilter :: Status -> Bool
-tweetFilter tweet = not $ tweet ^. statusTruncated
+tweetFilter tweet = not (tweet ^. statusTruncated) && T.length (tweet ^. statusText) < 120
 
 statusModifier :: String -> String
-statusModifier = filter isAscii . reverse . dropWhile (== ' ') . reverse
-    . dropWhile (== ' ') . rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
+statusModifier = filter isAscii
+    . reverse . dropWhile (== ' ') . reverse . dropWhile (== ' ')
+    . rewrite (fmap ('&' :) . stripPrefix "&amp;")
+    . rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
 
 parseArgs :: [String] -> [(String, Int)]
 parseArgs (name : n : xs) = (name, read n) : parseArgs xs

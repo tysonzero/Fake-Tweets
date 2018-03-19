@@ -151,6 +151,7 @@ public class TweetManager : MonoBehaviour {
 		if(tweet.name.Equals("realDonaldTrump"))
         {
             approvalRatingBar.approvalRating += sendTweetCorrectApprovalBonus;
+			approvalRatingBar.score += 5;
 			GetComponent<AudioSource>().PlayOneShot(correctSound);
             Debug.Log("Your Tweet has been sent. Correct!");
 			background_name = "donald_correct";
@@ -190,6 +191,7 @@ public class TweetManager : MonoBehaviour {
         {
 			GetComponent<AudioSource>().PlayOneShot(correctSound);
             approvalRatingBar.approvalRating += skipTweetCorrectApprovalBonus;
+			approvalRatingBar.score += 1;
             Debug.Log("You skipped that Tweet. Correct!");
 
 			if (tweet.name.Equals("HillaryClinton")) {
