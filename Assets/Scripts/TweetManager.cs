@@ -45,7 +45,7 @@ public class TweetManager : MonoBehaviour {
     {
         approvalRatingBar = GameObject.Find("ApprovalRatingBar").GetComponent<ApprovalRatingBar>();
 
-		targetPosition = new Vector3(0.2056804f, -2.582315f, 0);
+		targetPosition = new Vector3(0f, -2.25f, 0);
 		velocity = 50;
 
 		tweet = TweetBank.getRandomTweet ();
