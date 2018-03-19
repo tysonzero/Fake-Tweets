@@ -121,7 +121,7 @@ public class GameController : MonoBehaviour {
 			t.backgroundCanvas.GetComponent<Image>().sprite = spriteMap[t.background_name];
             t.handle.text = t.tweet.name + "\n@" + t.tweet.name;     
 			if (tweetMovementDelay <= 0.0f) {
-				t.targetPosition = new Vector3 (-14f, (float)(ts.Length - i - 1) * -6.5f + 3.24f, 0);
+				t.targetPosition = new Vector3 (-14f, (float)(ts.Length - i - 1) * -7.5f + 3.24f, 0);
 			}
  		}
 
@@ -132,7 +132,7 @@ public class GameController : MonoBehaviour {
 			t.backgroundCanvas.GetComponent<Image> ().sprite = spriteMap [t.background_name];
 			t.handle.text = t.tweet.name + "\n@" + t.tweet.name;
 			if (tweetMovementDelay <= 0.0f) {
-				t.targetPosition = new Vector3 (14f, (float)(ss.Length - i - 1) * -6.5f + 3.24f, 0);
+				t.targetPosition = new Vector3 (14f, (float)(ss.Length - i - 1) * -7.5f + 3.24f, 0);
 			}
                         
         }
