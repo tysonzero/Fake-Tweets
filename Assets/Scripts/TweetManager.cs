@@ -105,25 +105,12 @@ public class TweetManager : MonoBehaviour {
 					if (Input.anyKeyDown)
                     {
 						Debug.Log (currentTweetText);
-						if (Input.inputString == currentTweetText [0].ToString ())
+						while (" .,@#\"\'&".Contains(currentTweetText [0].ToString ())) {
+							InsertChar ();
+						}
+						if (Input.inputString.ToLower() == currentTweetText [0].ToString().ToLower())
                         {
-							Debug.Log ("Typed the correct character: " + Input.inputString);                   
-							currentTweetText = currentTweetText.Remove (0, 1);
-							Debug.Log ("Remaining text: " + currentTweetText);
-
-							ColorTypedChar ();
-							charsTyped += 1;
-
-							if (currentTweetText.Length == 0)
-                            {
-								tweetTyped = true;
-								AnalyticManager.incrementWordCount ();
-								Debug.Log ("The Tweet has been typed out. Press submit.");
-							}
-                            else if (Input.GetKeyDown("space"))
-                            {
-								AnalyticManager.incrementWordCount ();
-							}
+							InsertChar ();
 						}
                         else
                         {
@@ -137,6 +124,26 @@ public class TweetManager : MonoBehaviour {
 
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, velocity * Time.deltaTime);
     }
+
+	void InsertChar() {
+		Debug.Log ("Typed the correct character: " + Input.inputString);                   
+		currentTweetText = currentTweetText.Remove (0, 1);
+		Debug.Log ("Remaining text: " + currentTweetText);
+
+		ColorTypedChar ();
+		charsTyped += 1;
+
+		if (currentTweetText.Length == 0)
+        {
+			tweetTyped = true;
+			AnalyticManager.incrementWordCount ();
+			Debug.Log ("The Tweet has been typed out. Press submit.");
+		}
+        else if (Input.GetKeyDown("space"))
+        {
+			AnalyticManager.incrementWordCount ();
+		}
+	}
 
     void ColorTypedChar()
     {
