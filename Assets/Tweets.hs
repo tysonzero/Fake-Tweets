@@ -60,8 +60,10 @@ tweetFilter :: Status -> Bool
 tweetFilter tweet = not $ tweet ^. statusTruncated
 
 statusModifier :: String -> String
-statusModifier = filter isAscii . reverse . dropWhile (== ' ') . reverse
-    . dropWhile (== ' ') . rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
+statusModifier = filter isAscii
+    . reverse . dropWhile (== ' ') . reverse . dropWhile (== ' ')
+    . rewrite (fmap ('&' :) . stripPrefix "&amp;")
+    . rewrite (fmap (dropWhile (/= ' ')) . stripPrefix "http")
 
 parseArgs :: [String] -> [(String, Int)]
 parseArgs (name : n : xs) = (name, read n) : parseArgs xs
