@@ -41,6 +41,7 @@ public class GameController : MonoBehaviour {
 		startTime = DateTime.Now;
 		spriteMap = GetSpriteMap ();
 		StartCoroutine(DownloadTweets());
+        
 	}
 
 	IEnumerator DownloadTweets() {

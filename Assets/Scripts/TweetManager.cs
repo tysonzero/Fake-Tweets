@@ -54,6 +54,7 @@ public class TweetManager : MonoBehaviour {
 		action = new Action(tweet);
 		AnalyticManager.addAction (action);
 		saveAnalytics ();
+        handle.horizontalOverflow = HorizontalWrapMode.Overflow;
 			
         UpdateTweetTextString();
         AddColorTagsToTweet();
