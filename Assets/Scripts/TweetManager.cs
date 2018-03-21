@@ -106,7 +106,7 @@ public class TweetManager : MonoBehaviour {
 					if (Input.anyKeyDown)
                     {
 						Debug.Log (currentTweetText);
-						while (" .,@#\"\'&".Contains(currentTweetText [0].ToString ())) {
+						while (" .,@#\"\'&\n".Contains(currentTweetText [0].ToString ())) {
 							InsertChar ();
 						}
 						if (Input.inputString.ToLower() == currentTweetText [0].ToString().ToLower())
